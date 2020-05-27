@@ -5,7 +5,9 @@ wants to share her experience with her friends so she asks Anju to create a soci
 website through which she can post her articles. But Anju has very little knowledge in
 the backend since he has only worked in frontend so far. He wants your help to build
 the website
+
 Features to implement:
+
 Basic Task:
 1. Anju’s girlfriend wants her account to be secure so add an account sign-up
 and Login page to make her stay secure.
@@ -22,6 +24,7 @@ number of articles he has posted so far and also details such as the number
 of followers and following.
 5. Search option to search any username and view their articles on that page
 And follow them.
+
 Advance Task:
 1. In the profile page, have settings for changing username and password
 2. Add additional features to the editor which can provide users to add images,
