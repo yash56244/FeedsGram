@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block content %}
+<article class="content-section">
+    <div class="article-metadata">
+        <img src="http://tinygraphs.com/spaceinvaders/{{ article.author.username }}?theme=bythepool&numcolors=4&size=110&fmt=svg" alt="" class="img-thumbnail img-fluid rounded-circle" >
+        <a class="mr-2 text-light" href="{{ url_for('user_articles', username=article.author.username) }}">{{ article.author.username }}</a>
+        <small class="text-dark">{{ article.date_posted.strftime('%Y-%m-%d') }}</small>
+        <hr style="background-color: white;">
+        {% if article.author == current_user %}
+        <div>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('update_article', article_id=article.id) }}">Update</a>
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        </div>
+        {% endif %}
+    </div>
+    <h2 class="article-title">{{ article.title }}</h2>
+    <p class="article-content" style="word-wrap: break-word;">{{ article.content }}</p>
+</article>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form action="{{ url_for('delete_article', article_id=article.id) }}" method="POST">
+                    <input class="btn btn-danger" type="submit" value="Delete" style="position: relative; top: 8px;">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

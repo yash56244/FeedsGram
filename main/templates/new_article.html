@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section container shadow">
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">{{ legend }}</legend>
+            <div class="form-group">
+                {{ form.title.label(class="form-control-label") }}
+                {% if form.title.errors %}
+                {{ form.title(class="form-control form-control-lg is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.title.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                {{ form.title(class="form-control form-control-lg text-dark") }}
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.content.label(class="form-control-label") }}
+                {{ form.content(class="form-control form-control-lg text-dark") }}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-info") }}
+            <br><br>
+        </div>
+    </form>
+    <!-- <div>
+        <button onclick="execCmd('bold')"><i class="fa fa-bold"></i></button>
+        <button onclick="execCmd('italic')"><i class="fa fa-italic" aria-hidden="true"></i></button>
+        <button onclick="execCmd('underline')"><i class="fa fa-underline" aria-hidden="true"></i></button>
+        <button onclick="execCmd('strikeThrough')"><i class="fa fa-strikethrough" aria-hidden="true"></i></button>
+        <button onclick="execCmd('justifyLeft')"><i class="fa fa-align-left" aria-hidden="true"></i></button>
+        <button onclick="execCmd('justifyCenter')"><i class="fa fa-align-center" aria-hidden="true"></i></button>
+        <button onclick="execCmd('justifyRight')"><i class="fa fa-align-right" aria-hidden="true"></i></button>
+        <button onclick="execCmd('justifyFull')"><i class="fa fa-align-justify" aria-hidden="true"></i></button>
+        <button onclick="execCmd('cut')"><i class="fa fa-cut"></i></button>
+        <button onclick="execCmd('copy')"><i class="fa fa-copy"></i></button>
+        <button onclick="execCmd('indent')"><i class="fa fa-indent" aria-hidden="true"></i></button>
+        <button onclick="execCmd('outdent')"><i class="fa fa-dedent" aria-hidden="true"></i></button>
+        <button onclick="execCmd('subscript')"><i class="fa fa-subscript" aria-hidden="true"></i></button>
+        <button onclick="execCmd('superscript')"><i class="fa fa-superscript" aria-hidden="true"></i></button>
+        <button onclick="execCmd('undo')"><i class="fa fa-undo" aria-hidden="true"></i></button>
+        <button onclick="execCmd('redo')"><i class="fa fa-repeat" aria-hidden="true"></i></button>
+        <button onclick="execCmd('insertUnorderedList')"><i class="fa fa-list-ul" aria-hidden="true"></i></button>
+        <button onclick="execCmd('insertOrderedList')"><i class="fa fa-list-ol" aria-hidden="true"></i></button>
+        <button onclick="execCmd('insertParagraph')"><i class="fa fa-paragraph" aria-hidden="true"></i></button>
+        <select onchange="execCommandWithArg('formatBlock', this.value)" id="">
+            <option value="H1">H1</option>
+            <option value="H2">H2</option>
+            <option value="H3">H3</option>
+            <option value="H4">H4</option>
+            <option value="H5">H5</option>
+            <option value="H6">H6</option>
+        </select>
+        <button onclick="execCmd('insertHorizontalRule')">HR</button>
+        <button onclick="execCommandWithArg('createLink', prompt('Enter a URL', 'http://'))"><i class="fa fa-link" aria-hidden="true"></i></button>
+        <button onclick="execCmd('unlink')"><i class="fa fa-unlink"></i></button>
+        <button onclick="toggle()"><i class="fa fa-code" aria-hidden="true"></i></button>
+        <button onclick="toggleEdit()">Toggle Edit</button>
+        <select onchange="execCommandWithArg('fontName', this.value)" id="">
+            <option value="Arial">Arial</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Courier">Courier</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Tahoma">Tahoma</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+        <select onchange="execCommandWithArg('fontSize', this.value)" id="">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+        </select>
+        Color: <input type="color" onchange="execCommandWithArg('foreColor', this.value)">
+        <button onclick="execCmd('selectAll')">Select All</button>
+    </div>
+    <iframe name="textField" style="width: 500px;height: 500px;"></iframe> -->
+    <!-- <script type="text/javascript">
+        var showSourceCode=false;
+        var isInEditMode=true;
+        function enableEditMode(){
+            textField.document.designMode = 'On';
+        }
+        function execCmd(command){
+            textField.document.execCommand(command, false, null);
+        }
+        function execCommandWithArg(command, arg){
+            textField.document.execCommand(command, false, arg);
+        }
+        function toggle(){
+            if(showSourceCode){
+                textField.document.getElementByTagName('body').innerHTML=textField.document.getElementByTagName('body').textContent;
+                showSourceCode=false;
+            }else{
+                textField.document.getElementByTagName('body').textContent=textField.document.getElementByTagName('body').innerHTML;
+                showSourceCode=true;
+            }
+        }
+        function toggleEdit(){
+            if(isInEditMode){
+                textField.document.designMode = 'Off';
+                isInEditMode=false;
+            }else{
+                textField.document.designMode = 'On';
+                isInEditMode=true;
+            }
+        }
+    </script> -->
+</div>
+{% endblock content %}

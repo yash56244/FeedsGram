@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container shadow">
+    <div class="card border-0" style="background: transparent;">
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="http://tinygraphs.com/spaceinvaders/{{ user.username }}?theme=bythepool&numcolors=4&size=220&fmt=svg" alt="" class="img-thumbnail img-fluid">
+            </div>
+            <div class="col-md-8">
+                <h2 class="card-title">Username: {{ user.username }}</h2>
+                <p class="card-text"><strong>E-Mail: </strong>{{ user.email }}</p>
+                <p class="card-text"><strong>Articles Posted : </strong>{{ articles.total }}</p>
+                <p class="card-text"><strong>Followers : {{ user.followers.count() }}</strong> <strong>Following : {{ user.followed.count() }}</strong></p>
+                {% if not current_user.is_following(user) %}
+                <p>
+                <form action="{{ url_for('follow', username=user.username) }}" method="post">
+                    {{ form.hidden_tag() }}
+                    {{ form.submit(value='Follow', class="btn btn-primary")}}
+                </form>
+                </p>
+                {% else %}
+                <p>
+                <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
+                    {{ form.hidden_tag() }}
+                    {{ form.submit(value='UnFollow', class="btn btn-primary")}}
+                </form>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% for article in articles.items %}
+<article class="content-section">
+    <div class="article-metadata">
+        <a class="mr-2 text-light" href="{{ url_for('user_articles', username=article.author.username) }}">{{ article.author.username }}</a>
+        <small class="text-dark">{{ article.date_posted.strftime('%Y-%m-%d') }}</small>
+    </div>
+    <h2><a class="article-title text-light" href="{{ url_for('article', article_id=article.id) }}">{{ article.title }}</a></h2>
+    <p class="article-content" style="word-wrap: break-word;">{{ article.content[0:500] }}...</p>
+</article>
+<hr style="background-color: white;">
+{% endfor %}
+{% for page_num in articles.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+{% if page_num %}
+{% if articles.page == page_num %}
+<a class="btn btn-info mb-4" href="{{ url_for('user_articles', username=user.username, page=page_num) }}">{{ page_num }}</a>
+{% else %}
+<a class="btn btn-outline-info mb-4" href="{{ url_for('user_articles', username=user.username, page=page_num) }}">{{ page_num }}</a>
+{% endif %}
+{% else %}
+...
+{% endif %}
+{% endfor %}
+{% endblock content %}
