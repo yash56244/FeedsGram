@@ -15,7 +15,7 @@ def context_processor():
     accounts = db.session.execute('select count(id) as c from user'
                                   ).scalar()
     return dict(key=user, count=accounts)
-
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
