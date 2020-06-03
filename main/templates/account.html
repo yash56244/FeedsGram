@@ -1,5 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
+<style>
+    #id{
+        color: black;
+    }
+</style>
 <div class="content-section shadow container">
     <div class="row">
         <div class="col-3">
@@ -37,7 +42,7 @@
                     {% endfor %}
                 </div>
                 {% else %}
-                {{ form.email(class="form-control form-control-lg") }}
+                {{ form.email(class="form-control form-control-lg", id="id") }}
                 {% endif %}
             </div>
             <div class="form-group">
