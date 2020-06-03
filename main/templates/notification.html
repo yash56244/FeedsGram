@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+{% for notification in notification_received %}
+    <center>
+        <div class="container" style="background-color: green;color: white; margin-bottom: 20px;font-size: 20px; padding: 10px 20px; border-radius: 10px;">
+            {{ notification.message }}
+        </div>
+    </center>
+{% endfor %}
+{% endblock content %}
