@@ -1,9 +1,15 @@
-Make sure you have python installed in your computer.
+Make sure you have python installed in your computer. 
+
 clone this repo.
+
 Then open cmd and pip install -r requirements.txt
+
 Then in cmd type set FLASK_APP=path to run.py
+
 Initialise database by "flask db init" in cmd
+
 type flask run and you are ready to go.
+
 open http://localhost:5000/register
 
 PROBLEM STATEMENT
