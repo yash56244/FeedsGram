@@ -3,9 +3,10 @@ from flask import redirect, render_template, url_for, request, abort, \
     flash, session
 from flask_login import login_user, logout_user, current_user, \
     login_required
-from main.forms import LoginForm, RegistrationForm, ArticleForm, \
+from main.forms import LoginForm, RegistrationForm, \
     AccountUpdateForm, EmptyForm
-from main.models import User, Article
+from main.models import User, Article, Notification
+from datetime import datetime
 
 
 @app.context_processor
@@ -15,14 +16,12 @@ def context_processor():
                                   ).scalar()
     return dict(key=user, count=accounts)
 
-
-@app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
-    form = LoginForm()
-    if form.validate_on_submit():
+    form = LoginForm(request.form)
+    if form.validate_on_submit() and request.method == 'POST':
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password,
                 form.password.data):
@@ -70,6 +69,30 @@ def dashboard():
     return render_template('dashboard.html', title='Dashboard',
                            articles=articles)
 
+@app.route('/like/<int:article_id>/<action>')
+@login_required
+def like_action(article_id, action):
+    article = Article.query.filter_by(id=article_id).first_or_404()
+    if action == 'like':
+        if current_user.id != article.user_id:
+            message = "{} liked your article titled \"{}\"".format(current_user.username, article.title)
+            user = User.query.filter_by(id=article.user_id).first_or_404()
+            notification = Notification(author=current_user, receiver = user, message=message)
+            db.session.add(notification)
+        current_user.like_article(article)
+        db.session.commit()
+    if action == 'unlike':
+        current_user.unlike_article(article)
+        db.session.commit()
+    return redirect(request.referrer)
+
+@app.route('/notification')
+@login_required
+def notification():
+    current_user.last_notification_seen_time = datetime.utcnow()
+    db.session.commit()
+    notification_received = current_user.notifications_received.order_by(Notification.time.desc())
+    return render_template('notification.html', notification_received=notification_received)
 
 @app.route('/feed')
 @login_required
@@ -108,17 +131,16 @@ def account():
 @app.route('/article/new', methods=['POST', 'GET'])
 @login_required
 def new_article():
-    form = ArticleForm()
-    if form.validate_on_submit():
-        article = Article(title=form.title.data,
-                          content=form.content.data,
+    if request.method == 'POST':
+        article = Article(title=request.form.get('title'),
+                          content=request.form.get('editordata'),
                           author=current_user)
         db.session.add(article)
         db.session.commit()
         flash('Your article has been posted!', 'success')
         return redirect(url_for('dashboard'))
     return render_template('new_article.html', title='New Article',
-                           form=form, legend='New Article')
+                           legend='New Article')
 
 
 @app.route('/article/<int:article_id>')
@@ -128,24 +150,20 @@ def article(article_id):
                            article=article)
 
 
-@app.route('/article/<int:article_id>/update', methods=['POST', 'GET'])
+@app.route('/article/<int:article_id>/update', methods=['GET', 'POST'])
 @login_required
 def update_article(article_id):
     article = Article.query.get_or_404(article_id)
     if article.author != current_user:
         abort(403)
-    form = ArticleForm()
-    if form.validate_on_submit():
-        article.title = form.title.data
-        article.content = form.content.data
+    if request.method == 'POST':
+        article.title = request.form.get('title')
+        article.content = request.form.get('editordata')
         db.session.commit()
-        flash('Your post has been updated!', 'success')
+        flash('Your article has been updated!', 'success')
         return redirect(url_for('article', article_id=article.id))
-    elif request.method == 'GET':
-        form.title.data = article.title
-        form.content.data = article.content
     return render_template('new_article.html', title='Update Article',
-                           form=form, legend='Update Article')
+                           legend='Update Article')
 
 
 @app.route('/article/<int:article_id>/delete', methods=['POST'])
