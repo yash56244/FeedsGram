@@ -4,7 +4,17 @@
     <div class="article-metadata">
         <img src="http://tinygraphs.com/spaceinvaders/{{ article.author.username }}?theme=bythepool&numcolors=4&size=110&fmt=svg" alt="" class="img-thumbnail img-fluid rounded-circle" >
         <a class="mr-2 text-light" href="{{ url_for('user_articles', username=article.author.username) }}">{{ article.author.username }}</a>
-        <small class="text-dark">{{ article.date_posted.strftime('%Y-%m-%d') }}</small>
+        <small class="text-dark">{{ article.date_posted.strftime('%Y-%m-%d') }}</small><br><br>
+        {% if current_user.has_liked_article(article) %}
+            <a href="{{ url_for('like_action', article_id=article.id, action='unlike') }}" class="btn btn-danger">Unlike</a>
+        {% else %}
+            <a href="{{ url_for('like_action', article_id=article.id, action='like') }}" class="btn btn-success">Like</a>
+        {% endif %}
+        {% if article.likes.count()==1 or article.likes.count()==0 %}
+            {{ article.likes.count() }} like
+        {% else %}
+            {{ article.likes.count() }} likes
+        {% endif %}
         <hr style="background-color: white;">
         {% if article.author == current_user %}
         <div>
@@ -14,7 +24,7 @@
         {% endif %}
     </div>
     <h2 class="article-title">{{ article.title }}</h2>
-    <p class="article-content" style="word-wrap: break-word;">{{ article.content }}</p>
+    <p class="article-content" style="word-wrap: break-word;">{{ article.content|safe }}</p>
 </article>
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
