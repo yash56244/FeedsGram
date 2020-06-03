@@ -52,7 +52,7 @@
             document.getElementById('list').style.display="none";
         }
     </script>
-    <body style="background-color: #21D4FD;background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);" onload="enableEditMode()">
+    <body style="background-color: #21D4FD;background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);">
         <header class="header">
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <div class="container">
@@ -64,6 +64,7 @@
                         <div class="navbar-nav mr-auto">
                             <a class="nav-item nav-link" href="{{ url_for('dashboard') }}" style="font-weight: bolder; font-size: large;">Dashboard</a>
                             <a class="nav-item nav-link" href="{{ url_for('feed') }}" style="font-weight: bolder; font-size: large;">Feeds</a>
+                            <a class="nav-item nav-link" href="{{ url_for('notification') }}" style="font-weight: bolder; font-size: large;">Notifications</a>
                         </div>
                         <div class="navbar-nav">
                             <form class="form-inline">
